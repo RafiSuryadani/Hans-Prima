@@ -36,7 +36,7 @@
 				<div class="col-lg-2 col-md-2 col-12">
 					<!-- Logo -->
 					<div class="logo">
-						<a href="<?= base_url() ?>"><img src="<?= base_url() ?>images/logo.png" alt="logo"></a>
+						<a href="<?= base_url() ?>"><img src="<?= base_url() ?>img/hansprima_gpt2.png" alt="logo"></a>
 					</div>
 					<!--/ End Logo -->
 					<!-- Search Form -->
