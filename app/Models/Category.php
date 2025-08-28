@@ -9,7 +9,7 @@ class Category extends Model
     protected $table            = 'categories';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'App\Entities\Category'; // Menggunakan Entity
+    protected $returnType       = \App\Entities\Category::class; // Menggunakan Entity
     protected $useSoftDeletes   = false;
 
     protected $allowedFields    = [
@@ -27,9 +27,9 @@ class Category extends Model
 
     // Aturan Validasi
     protected $validationRules = [
+        'id'                => 'required|integer',
         'group_category_id' => 'required|integer|is_not_unique[group_categories.id]',
         'category_name'     => 'required|max_length[255]|is_unique[categories.category_name,id,{id}]',
-        'slug'              => 'required|max_length[255]|is_unique[categories.slug,id,{id}]',
         'user_id'           => 'permit_empty|integer',
         'image'             => 'permit_empty|uploaded[image]|max_size[image,2048]|is_image[image]|mime_in[image,image/jpg,image/jpeg,image/png,image/webp]',
     ];

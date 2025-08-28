@@ -15,13 +15,11 @@ class Category extends Entity
         'updated_at'        => 'datetime',
     ];
 
-    public function setSlug(string $slug): self
+    public function setCategoryName(string $categoryname): self
     {
-        if (empty($slug)) {
-            $slug = url_title($this->attributes['category_name'] ?? '', '-', true);
-        }
+        $this->attributes['category_name'] = $categoryname;
+        $this->attributes['slug'] = url_title($categoryname, '-', true);
 
-        $this->attributes['slug'] = $slug;
         return $this;
     }
 }

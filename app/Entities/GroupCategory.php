@@ -15,13 +15,10 @@ class GroupCategory extends Entity
         'updated_at' => 'datetime',
     ];
 
-    public function setSlug(string $slug): self
+    public function setGroupName(string $groupname): self
     {
-        if (empty($slug)) {
-            $slug = url_title($this->attributes['group_name'] ?? '', '-', true);
-        }
-
-        $this->attributes['slug'] = $slug;
+        $this->attributes['group_name'] = $groupname;
+        $this->attributes['slug'] = url_title($groupname, '-', true);
 
         return $this;
     }

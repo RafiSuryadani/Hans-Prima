@@ -5,10 +5,11 @@ namespace App\Controllers\Api;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
-class GroupCategory extends ResourceController
+class SubCategory extends ResourceController
 {
-    protected $modelName    = 'App\Models\GroupCategory';
-    protected $format       = 'json'; // Format respons default adalah JSON
+
+    protected $modelName    = 'App\Models\SubCategory';
+    protected $format       = 'json';
 
     /**
      * Return an array of resource objects, themselves in array format.
@@ -17,7 +18,12 @@ class GroupCategory extends ResourceController
      */
     public function index()
     {
-        return $this->respond($this->model->findAll());
+        $data = $this->model
+            ->select('sub_categories.*, categories.category_name')
+            ->join('categories', 'categories.id = sub_categories.category_id')
+            ->findAll();
+
+        return $this->respond($data);
     }
 
     /**
@@ -29,12 +35,15 @@ class GroupCategory extends ResourceController
      */
     public function show($id = null)
     {
-        $category = $this->model->find($id);
-        if ($category) {
-            return $this->respond($category);
-        }
+        $subCategory = $this->model
+            ->select('sub_categories.*, categories.category_name')
+            ->join('categories', 'categories.id = sub_categories.category_id')
+            ->find($id);
 
-        return $this->failNotFound('Group category tidak ditemukan.');
+        if ($subCategory) {
+            return $this->respond($subCategory);
+        }
+        return $this->failNotFound('Sub kategori tidak ditemukan.');
     }
 
     /**
@@ -56,18 +65,15 @@ class GroupCategory extends ResourceController
     {
         $data = $this->request->getJSON(true);
 
-        $groupCategory_data = new \App\Entities\GroupCategory($data);
+        $subCategory_data = new \App\Entities\SubCategory($data);
 
-        if (!$this->model->save($groupCategory_data)) {
+        if (!$this->model->save($subCategory_data)) {
             return $this->fail($this->model->errors());
         }
 
         $response = [
             'status'   => 201,
-            'error'    => null,
-            'messages' => [
-                'success' => 'Group category berhasil dibuat.'
-            ],
+            'messages' => ['success' => 'Sub kategori berhasil dibuat.'],
             'id' => $this->model->getInsertID()
         ];
         return $this->respondCreated($response);
@@ -94,26 +100,19 @@ class GroupCategory extends ResourceController
      */
     public function update($id = null)
     {
-        $category = $this->model->find($id);
-        if (!$category) {
-            return $this->failNotFound('Group category tidak ditemukan.');
+        if (!$this->model->find($id)) {
+            return $this->failNotFound('Sub kategori tidak ditemukan.');
         }
 
         $data = $this->request->getJSON(true);
-        $groupCategory_data = new \App\Entities\GroupCategory($data);
 
-        if (!$this->model->update($id, $groupCategory_data)) {
+        $subCategory_data = new \App\Entities\SubCategory($data);
+        
+        if (!$this->model->update($id, $subCategory_data)) {
             return $this->fail($this->model->errors());
         }
-
-        $response = [
-            'status'   => 200,
-            'error'    => null,
-            'messages' => [
-                'success' => 'Group category berhasil diperbarui.'
-            ]
-        ];
-        return $this->respond($response);
+        
+        return $this->respondUpdated(['message' => 'Sub kategori berhasil diperbarui.']);
     }
 
     /**
@@ -125,20 +124,14 @@ class GroupCategory extends ResourceController
      */
     public function delete($id = null)
     {
-        $category = $this->model->find($id);
-        if (!$category) {
-            return $this->failNotFound('Group category tidak ditemukan.');
+        if (!$this->model->find($id)) {
+            return $this->failNotFound('Sub kategori tidak ditemukan.');
         }
 
-        $this->model->delete($id);
-
-        $response = [
-            'status'   => 200,
-            'error'    => null,
-            'messages' => [
-                'success' => 'Group category berhasil dihapus.'
-            ]
-        ];
-        return $this->respondDeleted($response);
+        if ($this->model->delete($id)) {
+            return $this->respondDeleted(['message' => 'Sub kategori berhasil dihapus.']);
+        }
+        
+        return $this->fail('Gagal menghapus data.');
     }
 }

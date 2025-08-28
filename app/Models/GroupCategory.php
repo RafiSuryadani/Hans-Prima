@@ -10,7 +10,7 @@ class GroupCategory extends Model
     protected $table            = 'group_categories';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType       = 'App\Entities\GroupCategory'; // Menggunakan Entity
+    protected $returnType       = \App\Entities\GroupCategory::class;// Menggunakan Entity
     protected $useSoftDeletes   = false;
 
     protected $allowedFields    = ['group_name', 'slug', 'user_id'];
@@ -23,7 +23,6 @@ class GroupCategory extends Model
     // Aturan Validasi
     protected $validationRules = [
         'group_name' => 'required|max_length[255]|is_unique[group_categories.group_name,id,{id}]',
-        'slug'       => 'required|max_length[255]|is_unique[group_categories.slug,id,{id}]',
         'user_id'    => 'permit_empty|integer',
     ];
 
@@ -31,10 +30,6 @@ class GroupCategory extends Model
         'group_name' => [
             'required'   => 'Nama grup tidak boleh kosong.',
             'is_unique'  => 'Nama grup sudah ada, silakan gunakan nama lain.',
-        ],
-        'slug' => [
-            'required'   => 'Slug tidak boleh kosong.',
-            'is_unique'  => 'Slug ini sudah ada.',
         ],
     ];
 }

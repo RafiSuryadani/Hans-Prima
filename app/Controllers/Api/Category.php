@@ -76,7 +76,9 @@ class Category extends ResourceController
             $data['image'] = $newName;
         }
 
-        if ($this->model->save($data)) {
+        $category_data = new \App\Entities\Category($data);
+
+        if ($this->model->save($category_data)) {
             $response = [
                 'status'   => 201,
                 'messages' => ['success' => 'Kategori berhasil dibuat.'],
@@ -116,6 +118,8 @@ class Category extends ResourceController
         }
 
         $data = $this->request->getJSON(true);
+        
+        $data['id'] = $id;
 
         $validation = \Config\Services::validation();
         $validation->setRules($this->model->getValidationRules(['except' => ['image']]));
@@ -139,7 +143,9 @@ class Category extends ResourceController
             $data['image'] = $newName;
         }
 
-        if ($this->model->update($id, $data)) {
+        $category_data = new \App\Entities\Category($data);
+
+        if ($this->model->update($id, $category_data)) {
             return $this->respondUpdated(['message' => 'Kategori berhasil diperbarui.']);
         }
 

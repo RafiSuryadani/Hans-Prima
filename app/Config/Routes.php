@@ -15,4 +15,5 @@ $routes->group('api', function ($routes) {
     $routes->resource('group-categories', ['controller' => 'Api\GroupCategory']);
     $routes->resource('categories', ['controller' => 'Api\Category', 'except' => ['update']]);
     $routes->post('categories/(:num)', 'Api\Category::update/$1');
+    $routes->resource('sub-categories', ['controller' => 'Api\SubCategory']);
 });
