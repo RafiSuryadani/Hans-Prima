@@ -8,8 +8,14 @@
 				<i class="bi bi-grid-fill"></i>
 				<span>Dashboard</span>
 			</a>
+		</li>
 
-
+		<li
+			class="sidebar-item <?= $page == "Kelompok Kategori" ? 'active' : '' ?> ">
+			<a href="<?= base_url() ?>admin/group_category" class='sidebar-link'>
+				<i class="bi bi-grid-fill"></i>
+				<span>Kelompok Kategori</span>
+			</a>
 		</li>
 
 		<li class="sidebar-title">Forms &amp; Tables</li>

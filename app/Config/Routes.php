@@ -11,6 +11,10 @@ $routes->get('/admin', 'Admin\AdminController::index');
 $routes->get('/admin/form', 'Admin\AdminController::form');
 $routes->get('/admin/table', 'Admin\AdminController::table');
 
+// -- KELOMPOK KATEGORI --
+$routes->get('admin/group_category', 'Admin\GroupCategoryController::index');
+
+// ROUTES API CRUD
 $routes->group('api', function ($routes) {
     $routes->resource('group-categories', ['controller' => 'Api\GroupCategoryController']);
     $routes->resource('categories', ['controller' => 'Api\CategoryController', 'except' => ['update']]);
