@@ -12,8 +12,11 @@ $routes->get('/admin/form', 'Admin\AdminController::form');
 $routes->get('/admin/table', 'Admin\AdminController::table');
 
 $routes->group('api', function ($routes) {
-    $routes->resource('group-categories', ['controller' => 'Api\GroupCategory']);
-    $routes->resource('categories', ['controller' => 'Api\Category', 'except' => ['update']]);
-    $routes->post('categories/(:num)', 'Api\Category::update/$1');
-    $routes->resource('sub-categories', ['controller' => 'Api\SubCategory']);
+    $routes->resource('group-categories', ['controller' => 'Api\GroupCategoryController']);
+    $routes->resource('categories', ['controller' => 'Api\CategoryController', 'except' => ['update']]);
+    $routes->post('categories/(:num)', 'Api\CategoryController::update/$1');
+    $routes->resource('sub-categories', ['controller' => 'Api\SubCategoryController']);
+    
+    $routes->resource('products', ['controller' => 'Api\ProductController', 'except' => ['update']]);
+    $routes->post('products/(:num)', 'Api\ProductController::update/$1');
 });

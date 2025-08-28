@@ -5,7 +5,7 @@ namespace App\Controllers\Api;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
-class GroupCategory extends ResourceController
+class GroupCategoryController extends ResourceController
 {
     protected $modelName    = 'App\Models\GroupCategory';
     protected $format       = 'json'; // Format respons default adalah JSON

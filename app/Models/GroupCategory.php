@@ -15,7 +15,7 @@ class GroupCategory extends Model
 
     protected $allowedFields    = ['group_name', 'slug', 'user_id'];
 
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField     = 'created_at';
     protected $updatedField     = 'updated_at';

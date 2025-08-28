@@ -5,10 +5,11 @@ namespace App\Controllers\Api;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
-class Category extends ResourceController
+class ProductController extends ResourceController
 {
-    protected $modelName    = 'App\Models\Category';
-    protected $format       = 'json';
+
+    protected $modelName = 'App\Models\Product';
+    protected $format    = 'json';
 
     /**
      * Return an array of resource objects, themselves in array format.
@@ -18,11 +19,14 @@ class Category extends ResourceController
     public function index()
     {
         $data = $this->model
-            ->select('categories.*, group_categories.group_name')
-            ->join('group_categories', 'group_categories.id = categories.group_category_id', 'left')
+            ->select('products.*, group_categories.group_name, categories.category_name, sub_categories.category_subname')
+            ->join('group_categories', 'group_categories.id = products.group_category_id')
+            ->join('categories', 'categories.id = products.category_id')
+            ->join('sub_categories', 'sub_categories.id = products.sub_category_id')
             ->findAll();
 
         return $this->respond($data);
+
     }
 
     /**
@@ -34,15 +38,18 @@ class Category extends ResourceController
      */
     public function show($id = null)
     {
-        $category = $this->model
-            ->select('categories.*, group_categories.group_name')
-            ->join('group_categories', 'group_categories.id = categories.group_category_id', 'left')
-            ->find($id);
+        $product = $this->model
+            ->select('products.*, group_categories.group_name, categories.category_name, sub_categories.category_subname')
+            ->join('group_categories', 'group_categories.id = products.group_category_id')
+            ->join('categories', 'categories.id = products.category_id')
+            ->join('sub_categories', 'sub_categories.id = products.sub_category_id')
+            ->findAll();
 
-        if ($category) {
-            return $this->respond($category);
+        if ($product) {
+            return $this->respond($product);
         }
-        return $this->failNotFound('Kategori tidak ditemukan.');
+        
+        return $this->failNotFound('Produk tidak ditemukan.');
     }
 
     /**
@@ -63,7 +70,7 @@ class Category extends ResourceController
     public function create()
     {
         $data = $this->request->getJSON(true);
-
+        
         if (!$this->validate($this->model->validationRules)) {
             return $this->fail($this->validator->getErrors());
         }
@@ -72,13 +79,13 @@ class Category extends ResourceController
 
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $newName = $file->getRandomName();
-            $file->move(FCPATH . 'uploads/images/categories', $newName);
+            $file->move(FCPATH . 'uploads/images/products', $newName);
             $data['image'] = $newName;
         }
 
-        $category_data = new \App\Entities\Category($data);
+        $product_data = new \App\Entities\Product($data);
 
-        if ($this->model->save($category_data)) {
+        if ($this->model->save($product_data)) {
             $response = [
                 'status'   => 201,
                 'messages' => ['success' => 'Kategori berhasil dibuat.'],
@@ -112,9 +119,9 @@ class Category extends ResourceController
      */
     public function update($id = null)
     {
-        $category = $this->model->find($id);
-        if (!$category) {
-            return $this->failNotFound('Kategori tidak ditemukan.');
+        $product = $this->model->find($id);
+        if (!$product) {
+            return $this->failNotFound('Produk tidak ditemukan.');
         }
 
         $data = $this->request->getJSON(true);
@@ -134,19 +141,19 @@ class Category extends ResourceController
 
         $file = $this->request->getFile('image');
         if ($file && $file->isValid() && !$file->hasMoved()) {
-            if ($category->image && file_exists(FCPATH . 'uploads/images/categories/' . $category->image)) {
-                unlink(FCPATH . 'uploads/images/categories/' . $category->image);
+            if ($product->image && file_exists(FCPATH . 'uploads/images/products/' . $product->image)) {
+                unlink(FCPATH . 'uploads/images/products/' . $product->image);
             }
 
             $newName = $file->getRandomName();
-            $file->move(FCPATH . 'uploads/images/categories', $newName);
+            $file->move(FCPATH . 'uploads/images/products', $newName);
             $data['image'] = $newName;
         }
 
-        $category_data = new \App\Entities\Category($data);
+        $product_data = new \App\Entities\Product($data);
 
-        if ($this->model->update($id, $category_data)) {
-            return $this->respondUpdated(['message' => 'Kategori berhasil diperbarui.']);
+        if ($this->model->update($id, $product_data)) {
+            return $this->respondUpdated(['message' => 'Produk berhasil diperbarui.']);
         }
 
         return $this->fail('Gagal memperbarui data.');
@@ -161,17 +168,17 @@ class Category extends ResourceController
      */
     public function delete($id = null)
     {
-        $category = $this->model->find($id);
-        if (!$category) {
-            return $this->failNotFound('Kategori tidak ditemukan.');
+        $product = $this->model->find($id);
+        if (!$product) {
+            return $this->failNotFound('Produk tidak ditemukan.');
         }
 
-        if ($category->image && file_exists(FCPATH . 'uploads/images/categories/' . $category->image)) {
-            unlink(FCPATH . 'uploads/images/categories/' . $category->image);
+        if ($product->image && file_exists(FCPATH . 'uploads/images/products/' . $product->image)) {
+            unlink(FCPATH . 'uploads/images/products/' . $product->image);
         }
 
         if ($this->model->delete($id)) {
-            return $this->respondDeleted(['message' => 'Kategori berhasil dihapus.']);
+            return $this->respondDeleted(['message' => 'Produk berhasil dihapus.']);
         }
 
         return $this->fail('Gagal menghapus data.');

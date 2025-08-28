@@ -5,7 +5,7 @@ namespace App\Controllers\Api;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 
-class SubCategory extends ResourceController
+class SubCategoryController extends ResourceController
 {
 
     protected $modelName    = 'App\Models\SubCategory';
