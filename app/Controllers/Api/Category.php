@@ -62,7 +62,7 @@ class Category extends ResourceController
      */
     public function create()
     {
-        $data = $this->request->getPost();
+        $data = $this->request->getJSON(true);
 
         if (!$this->validate($this->model->validationRules)) {
             return $this->fail($this->validator->getErrors());
@@ -82,6 +82,7 @@ class Category extends ResourceController
                 'messages' => ['success' => 'Kategori berhasil dibuat.'],
                 'id' => $this->model->getInsertID()
             ];
+            
             return $this->respondCreated($response);
         }
 
@@ -114,7 +115,7 @@ class Category extends ResourceController
             return $this->failNotFound('Kategori tidak ditemukan.');
         }
 
-        $data = $this->request->getPost();
+        $data = $this->request->getJSON(true);
 
         $validation = \Config\Services::validation();
         $validation->setRules($this->model->getValidationRules(['except' => ['image']]));
