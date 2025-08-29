@@ -21,6 +21,11 @@
 	<link rel="stylesheet" crossorigin href="<?= base_url() ?>template/dist/assets/compiled/css/app.css">
 	<link rel="stylesheet" crossorigin href="<?= base_url() ?>template/dist/assets/compiled/css/app-dark.css">
 	<link rel="stylesheet" crossorigin href="<?= base_url() ?>template/dist/assets/compiled/css/iconly.css">
+
+	<link rel="stylesheet" href="<?= base_url() ?>template/dist/assets/extensions/sweetalert2/sweetalert2.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>template/dist/assets/extensions/toastify-js/src/toastify.css">
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.3.3/css/dataTables.dataTables.min.css" />
 </head>
 
 <body>
@@ -94,6 +99,10 @@
 
 		</div>
 	</div>
+
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
+
 	<script src="<?= base_url() ?>template/dist/assets/static/js/components/dark.js"></script>
 	<script src="<?= base_url() ?>template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 
@@ -106,7 +115,13 @@
 	<!-- Simple Datatable -->
 	<script src="<?= base_url() ?>template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
 	<script src="<?= base_url() ?>template/dist/assets/static/js/pages/simple-datatables.js"></script>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<!-- Sweet Alert -->
+	<script src="<?= base_url() ?>template/dist/assets/extensions/sweetalert2/sweetalert2.min.js"></script>
+	<script src="<?= base_url() ?>template/dist/assets/static/js/pages/sweetalert2.js"></script>
+	<!-- Toastify -->
+	<script src="<?= base_url() ?>template/dist/assets/extensions/toastify-js/src/toastify.js"></script>
+	<script src="<?= base_url() ?>template/dist/assets/static/js/pages/toastify.js"></script>
+
 
 	<?= $this->renderSection('script') ?>
 

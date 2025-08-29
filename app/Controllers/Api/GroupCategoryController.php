@@ -58,19 +58,29 @@ class GroupCategoryController extends ResourceController
 
         $groupCategory_data = new \App\Entities\GroupCategory($data);
 
-        if (!$this->model->save($groupCategory_data)) {
-            return $this->fail($this->model->errors());
-        }
+        try {
+            if (!$this->model->save($groupCategory_data, ['validate' => 'create'])) {
+                return $this->fail($this->model->errors());
+            }
 
-        $response = [
-            'status'   => 201,
-            'error'    => null,
-            'messages' => [
-                'success' => 'Group category berhasil dibuat.'
-            ],
-            'id' => $this->model->getInsertID()
-        ];
-        return $this->respondCreated($response);
+            $response = [
+                'status'   => 201,
+                'error'    => null,
+                'messages' => [
+                    'success' => 'Group category berhasil dibuat.'
+                ],
+                'id' => $this->model->getInsertID()
+            ];
+            return $this->respondCreated($response);
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException $e) {
+            if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                return $this->fail([
+                    'group_name' => 'Nama grup sudah ada, silakan gunakan nama lain.'
+                ], 400);
+            }
+
+            return $this->failServerError('Terjadi kesalahan pada server saat menyimpan data.');
+        }
     }
 
     /**
@@ -100,9 +110,12 @@ class GroupCategoryController extends ResourceController
         }
 
         $data = $this->request->getJSON(true);
+
+        $data['id'] = $id;
+
         $groupCategory_data = new \App\Entities\GroupCategory($data);
 
-        if (!$this->model->update($id, $groupCategory_data)) {
+        if (!$this->model->update($id, $groupCategory_data, ['validate' => 'update'])) {
             return $this->fail($this->model->errors());
         }
 

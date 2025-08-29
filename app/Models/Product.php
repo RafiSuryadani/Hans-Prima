@@ -45,7 +45,7 @@ class Product extends Model
         'sub_category_id'   => 'required|integer',
         'user_id'           => 'permit_empty|integer',
     ];
-    
+
     protected $validationRulesImage = [
         'image' => 'uploaded[image]|max_size[image,1024]|ext_in[image,png,jpg,jpeg]',
     ];

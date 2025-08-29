@@ -40,6 +40,4 @@ class SubCategory extends Model
             'is_unique' => 'Nama sub kategori tersebut sudah ada.',
         ],
     ];
-    
-
 }
